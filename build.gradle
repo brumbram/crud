@@ -2,7 +2,10 @@ plugins {
 	id 'org.springframework.boot' version '2.6.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.liquibase.gradle' version '2.0.4'
 }
+
+apply plugin: 'org.liquibase.gradle'
 
 group = 'co.zip.candidate'
 version = '0.0.1-SNAPSHOT'
@@ -16,13 +19,30 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 	implementation 'javax.mail:javax.mail-api'
 	implementation 'org.projectlombok:lombok:1.18.4'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	liquibaseRuntime 'org.postgresql:postgresql'
+	liquibaseRuntime 'org.liquibase:liquibase-core'
+	implementation "org.liquibase:liquibase-gradle-plugin:1.1.1"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.assertj:assertj-core'
 
 	annotationProcessor 'org.projectlombok:lombok'
+}
+
+
+liquibase {
+	activities {
+		main {
+			changeLogFile 'src/main/resources/db/changelog/changelog-master.xml'
+			url 'jdbc:postgresql://localhost:5432/crud'
+			username 'postgres'
+			password 'password'
+		}
+	}
 }
 
 test {

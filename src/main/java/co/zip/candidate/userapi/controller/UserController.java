@@ -1,13 +1,15 @@
 package co.zip.candidate.userapi.controller;
 
-import co.zip.candidate.userapi.model.UserDetail;
+import co.zip.candidate.userapi.model.UserDetailResponse;
 import co.zip.candidate.userapi.model.UserInputRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import co.zip.candidate.userapi.service.UserService;
+import co.zip.candidate.userapi.validator.ValidEmail;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Validated
@@ -15,22 +17,28 @@ import java.util.List;
 @RequestMapping(path = "/user")
 public class UserController {
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetail> getUser(@RequestParam String email) {
+    private UserService userService;
 
-        return ResponseEntity.ok(new UserDetail());
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDetailResponse> getUser(@RequestParam @ValidEmail String email) {
+
+        return ResponseEntity.ok(userService.getUser(email));
     }
 
     @GetMapping(value = "all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserDetail>> getAllUsers() {
+    public ResponseEntity<UserDetailResponse> getAllUsers() {
 
-        return ResponseEntity.ok(List.of(new UserDetail()));
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @PostMapping(value = "create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetail> createUser(@RequestBody UserInputRequest request) {
+    public ResponseEntity<UserDetailResponse> createUser(@RequestBody @Valid UserInputRequest request) {
 
-        return ResponseEntity.ok(new UserDetail());
+        return ResponseEntity.ok(userService.createUser(request));
     }
 
 }

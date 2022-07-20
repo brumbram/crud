@@ -1,31 +1,37 @@
 package co.zip.candidate.userapi.controller;
 
-import co.zip.candidate.userapi.model.AccountDetail;
+import co.zip.candidate.userapi.model.AccountDetailResponse;
 import co.zip.candidate.userapi.model.AccountInputRequest;
-import co.zip.candidate.userapi.model.UserDetail;
-import co.zip.candidate.userapi.model.UserInputRequest;
+import co.zip.candidate.userapi.service.AccountService;
+import co.zip.candidate.userapi.validator.ValidEmail;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @Validated
 @RestController
 @RequestMapping(path = "/account")
 public class AccountController {
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountDetail> getAccounts(@RequestParam String email) {
+    private AccountService accountService;
 
-        return ResponseEntity.ok(new AccountDetail());
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountDetailResponse> getAccounts(@RequestParam @ValidEmail String email) {
+
+        return ResponseEntity.ok(accountService.getAccountsForUser(email));
     }
 
     @PostMapping(value = "create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountDetail> createUser(@RequestBody AccountInputRequest request) {
+    public ResponseEntity<AccountDetailResponse> createUser(@RequestBody @Valid AccountInputRequest request) {
 
-        return ResponseEntity.ok(new AccountDetail());
+        return ResponseEntity.ok(accountService.createAccount(request));
     }
 
 }

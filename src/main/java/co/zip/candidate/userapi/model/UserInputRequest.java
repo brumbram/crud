@@ -11,10 +11,13 @@ public class UserInputRequest {
 
     @NotNull
     private String name;
+
     @ValidEmail
     private String email;
+
     @NotNull
     private BigDecimal monthlySalary;
+
     @NotNull
     private BigDecimal monthlyExpense;
 

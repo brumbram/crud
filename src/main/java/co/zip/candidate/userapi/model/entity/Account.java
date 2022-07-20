@@ -10,25 +10,24 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
-@Data
-@Entity
+@Getter
+@Setter
+@Entity(name = "zipaccount")
 public class Account extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long AccountId;
 
     @Column(nullable = false)
-    private String AccountId;
-
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
     @Setter(AccessLevel.NONE)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn(
-            name = "user_id",
-            foreignKey = @ForeignKey(name = "fk_user_account"),
+            name = "zip_user_id",
+            foreignKey = @ForeignKey(name = "fk_zip_user_zip_account"),
             nullable = false
     )
     private User user;

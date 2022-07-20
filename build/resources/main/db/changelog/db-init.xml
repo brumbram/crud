@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="dev-1" id="123-1">
+        <createTable tableName="zipuser">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="ZipUserPK"/>
+            </column>
+            <column name="name" type="varchar2">
+                <constraints nullable="false"/>
+             </column>
+            <column name="email" type="varchar2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_salary" type="decimal">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_expense" type="decimal">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime2"/>
+        </createTable>
+
+        <createTable tableName="zipaccount">
+            <column name="account_id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="ZipAccountPK"/>
+            </column>
+            <column name="created_at" type="datetime2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_type" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime2"/>
+            <column name ="zip_user_id" type="bigint">
+                <constraints  nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,19 +1,10 @@
 version: "3.8"
 services:
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
-    ports:
-      - 1433:1433
-    environment:
-      ACCEPT_EULA: Y
-      SA_PASSWORD: YourStrong@Passw0rd
-  postgres:
+  db:
     image: postgres:12
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: crud
     ports:
-      - 5432:5432
-    environment:
-      POSTGRES_PASSWORD: YourStrong@Passw0rd
-  mysql:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: YourStrong@Passw0rd
+      - '5432:5432'

@@ -1,7 +1,9 @@
 package co.zip.candidate.userapi.model.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
@@ -19,7 +21,7 @@ public class BaseEntity {
     private LocalDateTime createdAt;
 
     @Getter
-    @CreatedDate
+    @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 }
