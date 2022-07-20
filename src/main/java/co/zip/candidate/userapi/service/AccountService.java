@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static co.zip.candidate.userapi.util.ModelMapper.mapToAccountDetail;
@@ -57,9 +58,10 @@ public class AccountService {
             throw new InvalidInputError(Constants.Errors.USER_NOT_FOUND);
         }
 
-        Optional<Account> account = Optional.ofNullable(accountRepository.findByAccountType(AccountType.valueOf(request.getAccountType())));
+        Set<Account> accounts = user.get().getAccounts();
+        boolean accountExists = accounts.stream().anyMatch(x -> x.getAccountType().toString().equals(request.getAccountType()));
 
-        if (account.isPresent()) {
+        if (accountExists) {
             log.debug("Account {} already exists for email {}", request.getAccountType(), request.getEmail());
             throw new InvalidInputError(Constants.Errors.ACCOUNT_ALREADY_EXISTS);
         }

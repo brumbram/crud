@@ -20,7 +20,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
 @Target({METHOD, FIELD, PARAMETER, ANNOTATION_TYPE})
-@NotNull
 @Constraint(validatedBy = ValueOfEnum.ValueOfEnumValidator.class)
 @Retention(RUNTIME)
 public @interface ValueOfEnum {
@@ -45,8 +44,8 @@ public @interface ValueOfEnum {
 
         @Override
         public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-            log.debug("value {} acceptedValues {} ", acceptedValues,  value );
-            return acceptedValues.contains(value.toString());
+            log.debug("value {} acceptedValues {} ",value, acceptedValues );
+            return value != null && acceptedValues.contains(value.toString());
         }
     }
 }

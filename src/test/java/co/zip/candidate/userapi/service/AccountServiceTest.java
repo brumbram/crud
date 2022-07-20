@@ -36,14 +36,14 @@ public class AccountServiceTest {
     private AccountService accountService;
 
     private User testUser;
+    private User testUserWithAccount;
     private Account testAccount;
     private AccountInputRequest testRequest;
     private AccountInputRequest testFailRequest;
 
     @BeforeEach
     public void init() {
-        createTestUsers();
-        createTestAccounts();
+        createTestUsersAndAccounts();
         createTestAccountInput();
     }
 
@@ -83,13 +83,12 @@ public class AccountServiceTest {
 
         assertNotNull(createdAccount);
         assertEquals(createdAccount.getEmail(), testRequest.getEmail());
-        assertEquals(createdAccount.getAccounts().get(0).getAccountType(), testRequest.getAccountType());
+        assertEquals(createdAccount.getAccounts().get(0).getAccountType().toString(), testRequest.getAccountType());
     }
 
     @Test
     public void createAccountIfAlreadyExistsShouldFail() {
-        when(userRepository.findByEmail(testRequest.getEmail())).thenReturn(testAccount.getUser());
-        when(accountRepository.findByAccountType(AccountType.valueOf(testRequest.getAccountType()))).thenReturn(testAccount);
+        when(userRepository.findByEmail(testRequest.getEmail())).thenReturn(testUserWithAccount);
 
         InvalidInputError error = assertThrows(InvalidInputError.class, () -> {
             accountService.createAccount(testFailRequest);
@@ -103,19 +102,25 @@ public class AccountServiceTest {
         return List.of(testAccount);
     }
 
-    public void createTestUsers() {
+    public void createTestUsersAndAccounts() {
+
         testUser = new User();
         testUser.setName("dummy_1");
         testUser.setEmail("dummy1@d.com");
         testUser.setMonthlySalary(BigDecimal.valueOf(2000));
         testUser.setMonthlyExpense(BigDecimal.valueOf(100));
-    }
 
-    public void createTestAccounts() {
         testAccount = new Account();
         testAccount.setAccountType(AccountType.ZIPPAY);
-        testAccount.setUser(testUser);
+
+        testUserWithAccount = new User();
+        testUserWithAccount.setName("dummy_1");
+        testUserWithAccount.setEmail("dummy1@d.com");
+        testUserWithAccount.setMonthlySalary(BigDecimal.valueOf(2000));
+        testUserWithAccount.setMonthlyExpense(BigDecimal.valueOf(100));
+        testUserWithAccount.addAccount(testAccount);
     }
+
 
     public void createTestAccountInput () {
         testRequest = new AccountInputRequest();
@@ -124,7 +129,7 @@ public class AccountServiceTest {
 
         testFailRequest = new AccountInputRequest();
         testFailRequest.setEmail("dummy1@d.com");
-        testFailRequest.setAccountType("ZIPPPAY");
+        testFailRequest.setAccountType("ZIPPAY");
 
     }
 }

@@ -105,7 +105,7 @@ public class AccountControllerTest {
                .andDo(print())
                .andExpect(status().isBadRequest())
                .andExpect(jsonPath("$.errorDetail", hasSize(1)))
-               .andExpect(jsonPath("$.errorDetail.[0].code").value(Constants.Errors.MISSING_FIELD_INPUT.getCode()));
+               .andExpect(jsonPath("$.errorDetail.[0].code").value(Constants.Errors.INVALID_FIELD_INPUT.getCode()));
 
     }
 

@@ -20,7 +20,7 @@ public class AccountRepositoryTest {
     @Autowired
     private AccountRepository accountRepository;
 
-    private final static String DUMMY_EMAIL = "dummy@test.com";
+    private final static String DUMMY_EMAIL = "dummy2@test.com";
 
     @BeforeEach
     public void init() {

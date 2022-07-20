@@ -18,7 +18,7 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    private final static String DUMMY_EMAIL = "dummy@test.com";
+    private final static String DUMMY_EMAIL = "dummy1@test.com";
 
     @Test
     public void findByEmailShouldSucceed(){

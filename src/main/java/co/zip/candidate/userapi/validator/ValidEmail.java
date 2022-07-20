@@ -20,7 +20,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
 @Target({METHOD, FIELD, PARAMETER, ANNOTATION_TYPE})
-@NotNull
 @Constraint(validatedBy = ValidEmail.EmailValidator.class)
 @Retention(RUNTIME)
 public @interface ValidEmail {
@@ -40,7 +39,7 @@ public @interface ValidEmail {
 
         @Override
         public boolean isValid(String email, ConstraintValidatorContext context) {
-            return isEmailValid(email);
+            return email != null && isEmailValid(email);
         }
     }
 
