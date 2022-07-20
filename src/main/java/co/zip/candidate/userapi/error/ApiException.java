@@ -12,6 +12,7 @@ public class ApiException extends RuntimeException {
     private final String detail;
 
     public ApiException(Constants.Errors error) {
+        super(error.getTitle());
         this.code = error.getCode();
         this.title = error.getTitle();
         this.detail = error.getDetail();

@@ -1,17 +1,17 @@
 package co.zip.candidate.userapi.validator;
 
-
+import lombok.extern.slf4j.Slf4j;
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Documented;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
@@ -20,6 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
 @Target({METHOD, FIELD, PARAMETER, ANNOTATION_TYPE})
+@NotNull
 @Constraint(validatedBy = ValueOfEnum.ValueOfEnumValidator.class)
 @Retention(RUNTIME)
 public @interface ValueOfEnum {
@@ -29,14 +30,14 @@ public @interface ValueOfEnum {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-
+    @Slf4j
     class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, CharSequence> {
         private List<String> acceptedValues;
-        private ValueOfEnum constraintAnnotation;
+        private ValueOfEnum constraintViolation;
 
         @Override
         public void initialize(ValueOfEnum constraintAnnotation) {
-            this.constraintAnnotation = constraintAnnotation;
+            this.constraintViolation = constraintViolation;
             acceptedValues = Stream.of(constraintAnnotation.enumClass().getEnumConstants())
                                    .map(Enum::name)
                                    .collect(Collectors.toList());
@@ -44,10 +45,7 @@ public @interface ValueOfEnum {
 
         @Override
         public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-            if (value == null) {
-                return false;
-            }
-
+            log.debug("value {} acceptedValues {} ", acceptedValues,  value );
             return acceptedValues.contains(value.toString());
         }
     }

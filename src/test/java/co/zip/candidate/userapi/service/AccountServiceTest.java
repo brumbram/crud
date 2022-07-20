@@ -89,7 +89,7 @@ public class AccountServiceTest {
     @Test
     public void createAccountIfAlreadyExistsShouldFail() {
         when(userRepository.findByEmail(testRequest.getEmail())).thenReturn(testAccount.getUser());
-        when(accountRepository.findByAccountType(testRequest.getAccountType())).thenReturn(testAccount);
+        when(accountRepository.findByAccountType(AccountType.valueOf(testRequest.getAccountType()))).thenReturn(testAccount);
 
         InvalidInputError error = assertThrows(InvalidInputError.class, () -> {
             accountService.createAccount(testFailRequest);
@@ -120,11 +120,11 @@ public class AccountServiceTest {
     public void createTestAccountInput () {
         testRequest = new AccountInputRequest();
         testRequest.setEmail("dummy1@d.com");
-        testRequest.setAccountType(AccountType.ZIPPAY);
+        testRequest.setAccountType("ZIPPAY");
 
         testFailRequest = new AccountInputRequest();
         testFailRequest.setEmail("dummy1@d.com");
-        testFailRequest.setAccountType(AccountType.ZIPPAY);
+        testFailRequest.setAccountType("ZIPPPAY");
 
     }
 }

@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ErrorResponse> handleInvalidInputError(
           InvalidInputError dataInputError) {
-    log.error("test {} error {} ", dataInputError.getDetail(), dataInputError);
+    log.error(dataInputError.getDetail(), dataInputError);
     return ResponseEntity.badRequest()
                          .body(
                                  new ErrorResponse(List.of(new ErrorDetail(
@@ -47,7 +47,6 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
           MethodArgumentNotValidException methodArgumentNotValidException) {
-
     List<ErrorDetail> errors = methodArgumentNotValidException
             .getBindingResult()
             .getFieldErrors()

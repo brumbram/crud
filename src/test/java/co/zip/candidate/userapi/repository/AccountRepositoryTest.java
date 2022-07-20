@@ -47,7 +47,7 @@ public class AccountRepositoryTest {
     }
 
     @Test
-    public void findByAccountByUserShouldSucceed(){
+    public void findByAccountByUserIdShouldSucceed(){
 
         List<Account> account = accountRepository.findAllByUserId(Long.valueOf("1"));
 

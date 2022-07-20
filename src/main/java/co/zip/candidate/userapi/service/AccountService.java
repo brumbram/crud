@@ -7,6 +7,7 @@ import co.zip.candidate.userapi.model.AccountDetailResponse;
 import co.zip.candidate.userapi.model.AccountInputRequest;
 import co.zip.candidate.userapi.model.entity.Account;
 import co.zip.candidate.userapi.model.entity.User;
+import co.zip.candidate.userapi.model.enums.AccountType;
 import co.zip.candidate.userapi.repository.AccountRepository;
 import co.zip.candidate.userapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,10 @@ public class AccountService {
 
     public AccountDetailResponse getAccountsForUser(String email) {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
-        log.debug(" user is present {} = {}", email, user.isPresent());
+        log.debug(" Check if user is present {} = {}", email, user.isPresent());
+
         if (!user.isPresent()) {
+            log.debug("User does not exist for email {}", email);
             throw new InvalidInputError(Constants.Errors.USER_NOT_FOUND);
         }
 
@@ -47,20 +50,23 @@ public class AccountService {
     public AccountDetailResponse createAccount(AccountInputRequest request) {
 
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(request.getEmail()));
+        log.debug(" check if user is present {} = {}", request.getEmail(), user.isPresent());
 
         if (!user.isPresent()) {
+            log.debug("User does not exist for email {}", request.getEmail());
             throw new InvalidInputError(Constants.Errors.USER_NOT_FOUND);
         }
 
-        Optional<Account> account = Optional.ofNullable(accountRepository.findByAccountType(request.getAccountType()));
+        Optional<Account> account = Optional.ofNullable(accountRepository.findByAccountType(AccountType.valueOf(request.getAccountType())));
 
         if (account.isPresent()) {
+            log.debug("Account {} already exists for email {}", request.getAccountType(), request.getEmail());
             throw new InvalidInputError(Constants.Errors.ACCOUNT_ALREADY_EXISTS);
         }
 
         Account newAccount = new Account();
         newAccount.setUser(user.get());
-        newAccount.setAccountType(request.getAccountType());
+        newAccount.setAccountType(AccountType.valueOf(request.getAccountType()));
 
         accountRepository.saveAndFlush(newAccount);
 

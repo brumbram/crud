@@ -20,8 +20,9 @@ public class UserRepositoryTest {
 
     private final static String DUMMY_EMAIL = "dummy@test.com";
 
-    @BeforeEach
-    public void init() {
+    @Test
+    public void findByEmailShouldSucceed(){
+
         User newUser = new User();
         newUser.setEmail(DUMMY_EMAIL);
         newUser.setName("dummy");
@@ -29,10 +30,6 @@ public class UserRepositoryTest {
         newUser.setMonthlyExpense(BigDecimal.valueOf(100));
 
         userRepository.saveAndFlush(newUser);
-    }
-
-    @Test
-    public void findByEmailShouldSucceed(){
 
         User user = userRepository.findByEmail(DUMMY_EMAIL);
 

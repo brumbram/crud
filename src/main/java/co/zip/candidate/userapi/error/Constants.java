@@ -11,7 +11,8 @@ public class Constants {
         USER_NOT_FOUND("0400", "User not found", "User not found"),
         ACCOUNT_ALREADY_EXISTS("0500", "Account already exist","Account already exist"),
         INVALID_EMAIL("1001","Invalid email address","Missing or invalid email address"),
-        MISSING_FIELD_INPUT("1002","Missing value for required field","Missing value for required field %s"),
+        MISSING_FIELD_INPUT("1002","Missing value for required field","Missing value for required field: %s"),
+        INVALID_FIELD_INPUT("1003","Invalid value for required field","Invalid value for required field: %s"),
         GENERAL_ERROR("0100", "Unknown Error", "Unknown error occurred");
 
         private final String code;

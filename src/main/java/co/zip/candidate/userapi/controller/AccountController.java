@@ -1,5 +1,7 @@
 package co.zip.candidate.userapi.controller;
 
+import co.zip.candidate.userapi.error.Constants;
+import co.zip.candidate.userapi.error.InvalidInputError;
 import co.zip.candidate.userapi.model.AccountDetailResponse;
 import co.zip.candidate.userapi.model.AccountInputRequest;
 import co.zip.candidate.userapi.service.AccountService;
@@ -10,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static co.zip.candidate.userapi.util.EmailUtil.isEmailValid;
 
 @Validated
 @RestController
@@ -23,7 +27,11 @@ public class AccountController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountDetailResponse> getAccounts(@RequestParam @ValidEmail String email) {
+    public ResponseEntity<AccountDetailResponse> getAccounts(@RequestParam String email) {
+
+        if(!isEmailValid(email)) {
+            throw new InvalidInputError(Constants.Errors.INVALID_EMAIL);
+        }
 
         return ResponseEntity.ok(accountService.getAccountsForUser(email));
     }

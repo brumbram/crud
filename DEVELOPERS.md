@@ -1,7 +1,7 @@
 # User API Dev Guide
 
 ## Building
-#### Required software in local
+#### Required software in local (using maven instead of gradle because of familiarity with the tool)
 - JDK version 11
 - Maven 3.8.4
 - Spring 2.7
@@ -28,7 +28,7 @@ postgres=# CREATE database crud;
 ```
 
 #### Start the spring boot via command line application . 
-#### The startup will also run the initial database migrations
+#### The startup will also run the initial database migrations using liquibase configuration
 ```
 mvn spring-boot:run
 ```

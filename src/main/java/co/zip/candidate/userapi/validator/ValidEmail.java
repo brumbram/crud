@@ -6,18 +6,21 @@ import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import static co.zip.candidate.userapi.util.EmailUtil.isEmailValid;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
 @Documented
 @Target({METHOD, FIELD, PARAMETER, ANNOTATION_TYPE})
+@NotNull
 @Constraint(validatedBy = ValidEmail.EmailValidator.class)
 @Retention(RUNTIME)
 public @interface ValidEmail {
@@ -37,16 +40,8 @@ public @interface ValidEmail {
 
         @Override
         public boolean isValid(String email, ConstraintValidatorContext context) {
-            if (email == null) {
-                return false;
-            }
-            try {
-                // Create InternetAddress object and validated the supplied email address.
-                InternetAddress internetAddress = new InternetAddress(email, true); // strict
-                internetAddress.validate();
-                return true;
-            } catch (AddressException e) {}
-            return false;
+            return isEmailValid(email);
         }
     }
+
 }

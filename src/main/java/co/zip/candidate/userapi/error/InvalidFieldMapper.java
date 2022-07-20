@@ -10,7 +10,9 @@ public class InvalidFieldMapper {
             case "NotNull" :
                 return getErrorDetail(Constants.Errors.MISSING_FIELD_INPUT, field.getField());
             case "ValidEmail" :
-                return getErrorDetail(Constants.Errors.INVALID_EMAIL);
+                return getErrorDetail(Constants.Errors.INVALID_EMAIL, field.getField());
+            case "ValueOfEnum" :
+                return getErrorDetail(Constants.Errors.INVALID_FIELD_INPUT, field.getField());
             default :
                 return getErrorDetail(Constants.Errors.GENERAL_ERROR);
         }

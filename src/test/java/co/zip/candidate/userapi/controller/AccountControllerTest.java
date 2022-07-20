@@ -121,6 +121,6 @@ public class AccountControllerTest {
 
         testRequest = new AccountInputRequest();
         testRequest.setEmail(TEST_EMAIL);
-        testRequest.setAccountType(AccountType.ZIPPAY);
+        testRequest.setAccountType("ZIPPAY");
     }
 }
